@@ -1,14 +1,17 @@
+OVERVIEW:
+
 Style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
 
-Features:
+FEATURES:
+
  - Tiny! Only 1.2K (626 bytes minified)
  - Allows for templating your CSS
  - Your CSS can be compiled into your JS project, eliminating the need for the
    client to download extra CSS files, thus improving page load performance.
 
 
-Example:
+EXAMPLE:
 
 style.add({
 	'body': {
