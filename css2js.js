@@ -9,7 +9,7 @@ var
 		return argv[2];
 	}()),
 	css = require('fs').readFileSync(inFile, 'utf-8'),
-	parsedRules = (new (require('jscssp').CSSParser)).parse(css).cssRules,
+	parsedRules = (new (require('jscssp').CSSParser)()).parse(css).cssRules,
 	style = require('./style'),
 	outRules = {}
 ;
