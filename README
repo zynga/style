@@ -3,7 +3,11 @@ OVERVIEW:
 Style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
 
-FEATURES:
+Also included is css2js.js, a command-line utility for converting CSS files into
+style.add() notation.
+
+
+FEATURES: (of style.js)
 
  - Tiny! Only 1.2K (626 bytes minified)
  - Allows for templating your CSS
@@ -35,3 +39,9 @@ Results in this being added to the document.head:
 		border: 1px dotted #888;
 	}
 </style>
+
+
+Usage of css2js.js:
+
+npm install jscssp
+node css2js.js my.css > mystyle.js
