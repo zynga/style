@@ -1,4 +1,4 @@
-/*global document, module*/
+/*global module, require*/
 (function () {
 
 	// Establish the root object
@@ -44,7 +44,9 @@
 			var
 				i = -1,
 				len = declarations.length,
-				declaration
+				declaration,
+				property,
+				value
 			;
 			while (++i < len) {
 				declaration = declarations[i];

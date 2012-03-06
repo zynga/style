@@ -1,3 +1,4 @@
+/*global process, require*/
 var
 	inFile = (function () {
 		var argv = process.argv;

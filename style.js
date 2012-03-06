@@ -4,7 +4,7 @@
 	// Establish the root object
 	var
 		root = this, // 'window' or 'global'
-		style = { VERSION: '0.0.2' },
+		style = { VERSION: '0.0.3' },
 		previous = root.style
 	;
 	if (typeof module !== 'undefined' && module.exports) {
@@ -26,7 +26,7 @@
 					el.type = 'text/css';
 					document.getElementsByTagName('head')[0].appendChild(el);
 				}
-				if (typeof css == 'object') {
+				if (typeof css === 'object') {
 					var lines = [], selector, rule, property;
 					for (selector in css) {
 						if (css.hasOwnProperty(selector)) {
