@@ -1,4 +1,5 @@
-OVERVIEW:
+OVERVIEW
+--------
 
 Style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
@@ -7,7 +8,8 @@ Also included is css2js.js, a command-line utility for converting CSS files into
 style.add() notation.
 
 
-FEATURES: (of style.js)
+FEATURES (of style.js)
+----------------------
 
  - Tiny! Only 1.2K (626 bytes minified)
  - Allows for templating your CSS
@@ -15,33 +17,34 @@ FEATURES: (of style.js)
    client to download extra CSS files, thus improving page load performance.
 
 
-EXAMPLE:
+EXAMPLE
+-------
 
-style.add({
-	'body': {
-		'background': '#acf',
-		'color': 'green'
-	},
-	'.myclass, .yourclass': {
-		'border': '1px dotted #888'
-	}
-});
-
+	style.add({
+		'body': {
+			'background': '#acf',
+			'color': 'green'
+		},
+		'.myclass, .yourclass': {
+			'border': '1px dotted #888'
+		}
+	});
 
 Results in this being added to the document.head:
 
-<style class="text/css">
-	body {
-		background: #acf;
-		color: green;
-	}
-	.myclass, .yourclass {
-		border: 1px dotted #888;
-	}
-</style>
+	<style class="text/css">
+		body {
+			background: #acf;
+			color: green;
+		}
+		.myclass, .yourclass {
+			border: 1px dotted #888;
+		}
+	</style>
 
 
-Usage of css2js.js:
+USAGE of css2js.js
+------------------
 
-npm install jscssp
-node css2js.js my.css > mystyle.js
+	npm install jscssp
+	node css2js.js my.css > mystyle.js
