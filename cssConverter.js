@@ -4,7 +4,7 @@
 	// Establish the root object
 	var
 		root = this, // 'window' or 'global'
-		cssConverter = { VERSION: '0.0.1' },
+		cssConverter = { VERSION: '0.0.2' },
 		previous = root.cssConverter
 	;
 	if (typeof module !== 'undefined' && module.exports) {
@@ -32,8 +32,13 @@
 		var
 			output = '',
 			outRules = {},
-			parsedRules = parser.parse(css).cssRules
+			parsed = parser.parse(css),
+			parsedRules = parsed && parsed.cssRules
 		;
+
+		if (!parsedRules) {
+			return output;
+		}
 
 		function outputRules() {
 			output += 'style.add(' + JSON.stringify(outRules) + ');\n';
