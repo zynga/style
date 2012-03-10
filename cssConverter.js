@@ -4,7 +4,7 @@
 	// Establish the root object
 	var
 		root = this, // 'window' or 'global'
-		cssConverter = { VERSION: '0.0.2' },
+		cssConverter = { VERSION: '0.0.3' },
 		previous = root.cssConverter
 	;
 	if (typeof module !== 'undefined' && module.exports) {
@@ -17,7 +17,7 @@
 		return this;
 	};
 
-	var parser = new (require('jscssp').CSSParser)();
+	var parser = require('CSSOM');
 
 	function isEmpty(obj) {
 		for (var p in obj) {
@@ -45,20 +45,18 @@
 			outRules = {};
 		}
 
-		function iterateOverDeclarations(declarations, outRule) {
+		function iterateOverProperties(props, outRule) {
 			var
 				i = -1,
-				len = declarations.length,
-				declaration,
-				property,
+				len = props.length,
+				prop,
 				value
 			;
 			while (++i < len) {
-				declaration = declarations[i];
-				property = declaration.property;
-				value = declaration.valueText;
-				if (property && value) {
-					outRule[property] = value;
+				prop = props[i];
+				value = props[prop];
+				if (prop && value) {
+					outRule[prop] = value;
 				}
 			}
 		}
@@ -73,14 +71,14 @@
 			;
 			while (++i < len) {
 				parsedRule = parsedRules[i];
-				selector = parsedRule.mSelectorText;
+				selector = parsedRule.selectorText;
 				if (selector) {
 					if (outRules[selector]) {
 						// We already have a rule with the same selector.
 						outputRules();
 					}
 					outRule = outRules[selector] = {};
-					iterateOverDeclarations(parsedRule.declarations || [], outRule);
+					iterateOverProperties(parsedRule.style || [], outRule);
 				}
 			}
 		}
