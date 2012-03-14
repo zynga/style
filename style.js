@@ -1,21 +1,24 @@
-/*global document, module*/
+/*global global, module*/
 (function () {
 
-	// Establish the root object
-	var
-		root = this, // 'window' or 'global'
-		style = { VERSION: '0.0.3' },
-		previous = root.style
-	;
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = style;
-	}
-	root.style = style;
+	// Make a module
+	var style = (function (name) {
+		var rt = typeof window !== 'undefined' ? window : global,
+			had = rt.hasOwnProperty(name), prev = rt[name], me = rt[name] = {};
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = me;
+		}
+		me.noConflict = function () {
+			delete rt[name];
+			if (had) {
+				rt[name] = prev;
+			}
+			return this;
+		};
+		return me;
+	}('style'));
 
-	style.noConflict = function () {
-		root.style = previous;
-		return this;
-	};
+	style.VERSION = '0.0.4';
 
 	style.sheet = function () {
 		var el;
