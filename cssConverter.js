@@ -1,21 +1,24 @@
 /*global module, require*/
 (function () {
 
-	// Establish the root object
-	var
-		root = this, // 'window' or 'global'
-		cssConverter = { VERSION: '0.0.3' },
-		previous = root.cssConverter
-	;
-	if (typeof module !== 'undefined' && module.exports) {
-		module.exports = cssConverter;
-	}
-	root.cssConverter = cssConverter;
+	// Make a module
+	var cssConverter = (function (name) {
+		var rt = typeof window !== 'undefined' ? window : global,
+			had = rt.hasOwnProperty(name), prev = rt[name], me = rt[name] = {};
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = me;
+		}
+		me.noConflict = function () {
+			delete rt[name];
+			if (had) {
+				rt[name] = prev;
+			}
+			return this;
+		};
+		return me;
+	}('cssConverter'));
 
-	cssConverter.noConflict = function () {
-		root.cssConverter = previous;
-		return this;
-	};
+	cssConverter.VERSION = '0.0.4';
 
 	var parser = require('CSSOM');
 
@@ -45,20 +48,30 @@
 			outRules = {};
 		}
 
-		function iterateOverProperties(props, outRule) {
+		function iterateOverProperties(props) {
 			var
 				i = -1,
 				len = props.length,
 				prop,
-				value
+				value,
+				ruleBody = {},
+				ruleBodies = [ruleBody]
 			;
 			while (++i < len) {
 				prop = props[i];
 				value = props[prop];
 				if (prop && value) {
-					outRule[prop] = value;
+					if (ruleBody.hasOwnProperty(prop)) {
+						// In CSS it is valid to specifiy the same property name more
+						// than once, but this won't fly in JS object notation; so, we
+						// need to start a new rule body.
+						ruleBody = {};
+						ruleBodies.push(ruleBody);
+					}
+					ruleBody[prop] = value;
 				}
 			}
+			return ruleBodies;
 		}
 
 		function iterateOverParsedRules(parsedRules) {
@@ -67,18 +80,23 @@
 				len = parsedRules.length,
 				parsedRule,
 				selector,
-				outRule
+				ruleBodies
 			;
 			while (++i < len) {
 				parsedRule = parsedRules[i];
 				selector = parsedRule.selectorText;
 				if (selector) {
-					if (outRules[selector]) {
-						// We already have a rule with the same selector.
+					if (outRules.hasOwnProperty(selector)) {
+						// We already have a rule with the same selector. Output the
+						// current 'style.add({...})' declaration and start a new one.
 						outputRules();
 					}
-					outRule = outRules[selector] = {};
-					iterateOverProperties(parsedRule.style || [], outRule);
+					ruleBodies = iterateOverProperties(parsedRule.style || []);
+					outRules[selector] = ruleBodies.shift();
+					while (ruleBodies.length) {
+						outputRules();
+						outRules[selector] = ruleBodies.shift();
+					}
 				}
 			}
 		}
