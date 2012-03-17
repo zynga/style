@@ -18,9 +18,9 @@
 		return me;
 	}('cssConverter'));
 
-	cssConverter.VERSION = '0.0.4';
+	cssConverter.VERSION = '0.0.5';
 
-	var parser = require('CSSOM');
+	var parser = require('cssom-papandreou');
 
 	function isEmpty(obj) {
 		for (var p in obj) {

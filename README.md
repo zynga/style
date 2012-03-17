@@ -46,5 +46,5 @@ Results in this being added to the document.head:
 USAGE of css2js.js
 ------------------
 
-	npm install jscssp
+	npm install cssom-papandreou
 	node css2js.js my.css > mystyle.js
