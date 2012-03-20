@@ -1,4 +1,4 @@
-/*global module, require*/
+/*global global, module, require*/
 (function () {
 
 	// Make a module
