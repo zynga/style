@@ -11,7 +11,7 @@ style.add() notation.
 FEATURES (of style.js)
 ----------------------
 
- - Tiny! Only 1.2K (626 bytes minified)
+ - Tiny! Only 804 bytes minified.
  - Allows for templating your CSS
  - Your CSS can be compiled into your JS project, eliminating the need for the
    client to download extra CSS files, thus improving page load performance.

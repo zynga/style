@@ -18,22 +18,26 @@
 		return me;
 	}('style'));
 
-	style.VERSION = '0.0.4';
+	style.VERSION = '0.0.5';
+
 
 	style.sheet = function () {
-		var el;
+		var el, prefix;
 		return {
-			add: function (css) {
+			add: function (css, options) {
+				prefix = options && options.prefix;
 				if (!el) {
 					el = document.createElement('style');
 					el.type = 'text/css';
 					document.getElementsByTagName('head')[0].appendChild(el);
 				}
 				if (typeof css === 'object') {
-					var lines = [], selector, rule, property;
+					var lines = [], rule, selector, finalSelector, property;
 					for (selector in css) {
 						if (css.hasOwnProperty(selector)) {
-							lines.push(selector + ' {');
+							finalSelector = prefix ?
+								selector.replace(/\./g, '.' + prefix) : selector;
+							lines.push(finalSelector + ' {');
 							rule = css[selector];
 							for (property in rule) {
 								if (rule.hasOwnProperty(property)) {
