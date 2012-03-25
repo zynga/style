@@ -18,13 +18,22 @@
 		return me;
 	}('style'));
 
-	style.VERSION = '0.0.5';
+	style.VERSION = '0.0.6';
 
+
+	var keys = {};
 
 	style.sheet = function () {
-		var el, prefix;
+		var el, key, prefix;
 		return {
 			add: function (css, options) {
+				key = options && options.key;
+				if (key) {
+					if (keys.hasOwnProperty(key)) {
+						return;
+					}
+					keys[key] = true;
+				}
 				prefix = options && options.prefix;
 				if (!el) {
 					el = document.createElement('style');
