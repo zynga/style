@@ -3,22 +3,26 @@
 
 	// Make a module
 	var style = (function (name) {
-		var rt = typeof window !== 'undefined' ? window : global,
-			had = rt.hasOwnProperty(name), prev = rt[name], me = rt[name] = {};
+		var root = typeof window !== 'undefined' ? window : global,
+			had = Object.prototype.hasOwnProperty.call(root, name),
+			prev = root[name], me = root[name] = {};
 		if (typeof module !== 'undefined' && module.exports) {
 			module.exports = me;
 		}
 		me.noConflict = function () {
-			delete rt[name];
-			if (had) {
-				rt[name] = prev;
+			root[name] = had ? prev : undefined;
+			if (!had) {
+				try {
+					delete root[name];
+				} catch (ex) {
+				}
 			}
 			return this;
 		};
 		return me;
 	}('style'));
 
-	style.VERSION = '0.0.6';
+	style.VERSION = '0.0.7';
 
 
 	var keys = {};
