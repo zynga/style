@@ -1,15 +1,12 @@
-OVERVIEW
+Overview
 ========
 
 Style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
 
-Also included is css2js.js, a command-line utility for converting CSS files into
-style.add() notation.
 
-
-FEATURES (of style.js)
-======================
+Features
+========
 
  - Tiny! Only 870 bytes minified.
  - Allows for templating your CSS
@@ -17,7 +14,7 @@ FEATURES (of style.js)
    client to download extra CSS files, thus improving page load performance.
 
 
-EXAMPLE
+Example
 =======
 
 	style.add({
@@ -43,7 +40,7 @@ Results in this being added to the document.head:
 	</style>
 
 
-OPTIONS
+Options
 =======
 
 The `style.add()` method takes an optional second parameter: `options`.
@@ -55,10 +52,3 @@ being added to document more than once.
 
 ### options.prefix
 If present, this prefix is added to all CSS class names for this call.
-
-
-USAGE of css2js.js
-==================
-
-	npm install cssom-papandreou
-	node css2js.js my.css > mystyle.js

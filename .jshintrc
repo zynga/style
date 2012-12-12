@@ -12,16 +12,10 @@
     "couch"         : false,
     "wsh"           : true,   // Windows Scripting Host.
 
-    "jquery"        : true,
+    "jquery"        : false,
     "prototypejs"   : false,
     "mootools"      : false,
     "dojo"          : false,
-
-    "predef"        : [  // Custom globals.
-        //"exampleVar",
-        //"anotherCoolGlobal",
-        //"iLoveDouglas"
-    ],
 
 
     // Development.
