@@ -22,7 +22,7 @@ $(function () {
 	}
 	function cssEq(styleEl, cssText) {
 		var elText = (styleEl.styleSheet && styleEl.styleSheet.cssText) ||
-			styleEl.innerText;
+			styleEl.innerHTML;
 		return elText.replace(/\s/g, '') === cssText.replace(/\s/g, '');
 	}
 
@@ -38,7 +38,7 @@ $(function () {
 	}
 
 	function clearMyStyle() {
-		myStyleEl.innerText = '';
+		myStyleEl.innerHTML = '';
 		if (myStyleEl.styleSheet) {
 			myStyleEl.styleSheet.cssText = '';
 		}

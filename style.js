@@ -6,7 +6,7 @@
 	var
 		style,
 		funcName = 'style',
-		VERSION = '0.2.1',
+		VERSION = '0.2.2',
 		ObjProto = Object.prototype,
 		hasOwn = ObjProto.hasOwnProperty,
 		had = hasOwn.call(win, funcName),
