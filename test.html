@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
-style({'.entry': { 'border-top': '1px solid #ccc' }});
+style({'.error': { color: '#D04;' }});
 $(function () {
 	var
 		body = $(document.body).empty(),
@@ -35,6 +35,48 @@ $(function () {
 	test = 'Object notation for both rules and properties';
 	myStyleSheet({ body: { background: 'red' }});
 	if (myStyleEl.innerText === 'body {\nbackground: red;\n}') {
+		log(test + ' worked.');
+	} else {
+		err(test + ' FAILED.');
+	}
+	myStyleEl.innerText = '';
+
+	test = 'Object notation for rules, with array notation for properties';
+	myStyleSheet({ body: [
+		['color', 'red'],
+		['padding', '0']
+	]});
+	if (myStyleEl.innerText === 'body {\ncolor: red;\npadding: 0;\n}') {
+		log(test + ' worked.');
+	} else {
+		err(test + ' FAILED.');
+	}
+	myStyleEl.innerText = '';
+
+	test = 'Array notation for rules, with mixed notation for properties';
+	myStyleSheet([
+		['body', { color: 'blue' }],
+		['body', [
+			['background', 'red'],
+			['padding', '0']
+		]]
+	]);
+	if (myStyleEl.innerText === 'body {\ncolor: blue;\n}\nbody {\nbackground: red;\npadding: 0;\n}') {
+		log(test + ' worked.');
+	} else {
+		err(test + ' FAILED.');
+	}
+	myStyleEl.innerText = '';
+
+	test = 'Classname prefixing';
+	myStyleSheet([
+		['.body', { color: 'blue' }],
+		['.body', [
+			['background', 'red'],
+			['padding', '0']
+		]]
+	], { prefix: 'my' });
+	if (myStyleEl.innerText === '.mybody {\ncolor: blue;\n}\n.mybody {\nbackground: red;\npadding: 0;\n}') {
 		log(test + ' worked.');
 	} else {
 		err(test + ' FAILED.');
