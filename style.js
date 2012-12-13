@@ -1,5 +1,7 @@
+//
 // style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 // notation closely resembling actual CSS syntax.
+//
 (function (win, doc, undef) {
 	var
 		style,
