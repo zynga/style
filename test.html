@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>style.js tests</title>
+<script src="style.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+	type="text/javascript"></script>
+<script type="text/javascript">
+style({'.entry': { 'border-top': '1px solid #ccc' }});
+$(function () {
+	var
+		body = $(document.body).empty(),
+		success = true
+	;
+
+	function log(msg, err) {
+		$('<div class="entry' + (err ? ' error' : '') + '"></div>').append(msg).appendTo(body);
+	}
+	function err(msg) {
+		log(msg, 1);
+		success = false;
+	}
+
+	var
+		myStyleSheet = style.noConflict().sheet(),
+		myStyleEl = document.getElementsByTagName('style')[1],
+		test
+	;
+	if (typeof style === 'undefined') {
+		log('.noConflict() worked.');
+	} else {
+		err('.noConflict() did not remove global reference!');
+	}
+
+	test = 'Object notation for both rules and properties';
+	myStyleSheet({ body: { background: 'red' }});
+	if (myStyleEl.innerText === 'body {\nbackground: red;\n}') {
+		log(test + ' worked.');
+	} else {
+		err(test + ' FAILED.');
+	}
+	myStyleEl.innerText = '';
+
+	log(success ? 'All tests passed.' : 'Not all tests passed. :(', !success);
+});
+</script>
+</head>
+<body>
+</body>
+</html>
