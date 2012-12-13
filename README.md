@@ -1,7 +1,7 @@
 Overview
 ========
 
-Style.js is a tiny JavaScript utility that lets you write CSS in a JS object
+style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
 
 
@@ -63,6 +63,27 @@ Or, more usefully:
 				'-webkit-gradient(linear, 0 0, 0 100%, from(#a8ccf8), color-stop(7%, #76b1f8), color-stop(33%, #6eadf5), to(#2376f5))']
 		]
 	});
+
+To avoid CSS conflicts with other components on the page, it's also useful to be
+able to prefix the classnames with a custom string:
+
+	style(
+		{
+			'body .fancyclass': {
+				color: 'chartreuse'
+			}
+		},
+		{ prefix: 'my_' }
+	);
+
+Resulting CSS:
+
+	<style class="text/css">
+		body .my_fancyclass {
+			color: chartreuse;
+		}
+	</style>
+
 
 Options
 =======

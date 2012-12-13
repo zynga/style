@@ -1,10 +1,13 @@
+// style.js is a tiny JavaScript utility that lets you write CSS in a JS object
+// notation closely resembling actual CSS syntax.
 (function (win, doc, undef) {
 	var
-		func,
+		style,
 		funcName = 'style',
-		VERSION = '0.1.0',
+		VERSION = '0.2.0',
 		ObjProto = Object.prototype,
-		had = ObjProto.hasOwnProperty.call(win, funcName),
+		hasOwn = ObjProto.hasOwnProperty,
+		had = hasOwn.call(win, funcName),
 		previous = win[funcName],
 		defaultEl,
 		head,
@@ -14,7 +17,7 @@
 		}
 	;
 
-	// Create a <style> element, and add it to <head>
+	// Create a <style> element, and add it to <head>.
 	function createEl() {
 		var el = doc.createElement('style');
 		el.type = 'text/css';
@@ -24,7 +27,7 @@
 	}
 
 	// Here is the actual style() function.
-	func = win[funcName] = function (css, options, el) {
+	style = win[funcName] = function (css, options, el) {
 		var
 			key = options && options.key,
 			lines = [],
@@ -34,7 +37,7 @@
 			el = defaultEl = defaultEl || createEl();
 		}
 		if (key) {
-			if (keys.hasOwnProperty(key)) {
+			if (hasOwn.call(keys, key)) {
 				return;
 			}
 			keys[key] = true;
@@ -50,7 +53,7 @@
 				}
 			} else {
 				for (var prop in rule) {
-					if (rule.hasOwnProperty(prop)) {
+					if (hasOwn.call(rule, prop)) {
 						lines.push(prop + ': ' + rule[prop] + ';');
 					}
 				}
@@ -65,7 +68,7 @@
 				}
 			} else {
 				for (var selector in css) {
-					if (css.hasOwnProperty(selector)) {
+					if (hasOwn.call(css, selector)) {
 						addRule(selector, css[selector]);
 					}
 				}
@@ -79,10 +82,10 @@
 		}
 	};
 
-	func.VERSION = VERSION;
+	style.VERSION = VERSION;
 
-	func.noConflict = function () {
-		if (win[funcName] === func) {
+	style.noConflict = function () {
+		if (win[funcName] === style) {
 			win[funcName] = had ? previous : undef;
 			if (!had) {
 				try {
@@ -91,16 +94,19 @@
 				}
 			}
 		}
-		return func;
+		return style;
 	};
 
-	func.add = func;
+	// For backwards compatibility, style.add() is an alias for style().
+	style.add = style;
 
-	func.sheet = function () {
+	// Force creation of a new <style> element, returning a scoped style()
+	// function that will append styles to this new element.
+	style.sheet = function () {
 		var
 			el = createEl(),
 			sheetFunc = function (css, options) {
-				func(css, options, el);
+				style(css, options, el);
 			}
 		;
 		sheetFunc.add = sheetFunc;
