@@ -8,9 +8,10 @@ notation closely resembling actual CSS syntax.
 Features
 ========
 
- - Tiny! (~1K minified).
+ - Tiny! (~1K minified)
  - Allows for templating your CSS (for instance, easily add a custom prefix to
    all class names).
+ - Supports .noConflict().
  - Your CSS can be compiled into your JS project, eliminating the need for the
    client to download extra CSS files, thus improving page load performance.
 
