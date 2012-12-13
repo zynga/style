@@ -1,77 +1,110 @@
-/*global global, module*/
-(function () {
-
-	// Make a module
-	var style = (function (name) {
-		var root = typeof window !== 'undefined' ? window : global,
-			had = Object.prototype.hasOwnProperty.call(root, name),
-			prev = root[name], me = root[name] = {};
-		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = me;
+(function (win, doc, undef) {
+	var
+		func,
+		funcName = 'style',
+		VERSION = '0.1.0',
+		ObjProto = Object.prototype,
+		had = ObjProto.hasOwnProperty.call(win, funcName),
+		previous = win[funcName],
+		defaultEl,
+		head,
+		keys = {},
+		isArray = Array.isArray || function (obj) {
+			return ObjProto.toString.call(obj) === '[object Array]';
 		}
-		me.noConflict = function () {
-			root[name] = had ? prev : undefined;
+	;
+
+	// Create a <style> element, and add it to <head>
+	function createEl() {
+		var el = doc.createElement('style');
+		el.type = 'text/css';
+		head = head || doc.getElementsByTagName('head')[0];
+		head.appendChild(el);
+		return el;
+	}
+
+	// Here is the actual style() function.
+	func = win[funcName] = function (css, options, el) {
+		var
+			key = options && options.key,
+			lines = [],
+			prefix = options && options.prefix
+		;
+		if (!el) {
+			el = defaultEl = defaultEl || createEl();
+		}
+		if (key) {
+			if (keys.hasOwnProperty(key)) {
+				return;
+			}
+			keys[key] = true;
+		}
+		function addRule(selector, rule) {
+			var finalSelector = prefix ?
+				selector.replace(/\./g, '.' + prefix) : selector;
+			lines.push(finalSelector + ' {');
+			if (isArray(rule)) {
+				for (var i = -1, len = rule.length; ++i < len;) {
+					var line = rule[i];
+					lines.push(line[0] + ': ' + line[1] + ';');
+				}
+			} else {
+				for (var prop in rule) {
+					if (rule.hasOwnProperty(prop)) {
+						lines.push(prop + ': ' + rule[prop] + ';');
+					}
+				}
+			}
+			lines.push('}');
+		}
+		if (typeof css === 'object') {
+			if (isArray(css)) {
+				for (var i = -1, len = css.length; ++i < len;) {
+					var rule = css[i];
+					addRule(rule[0], rule[1]);
+				}
+			} else {
+				for (var selector in css) {
+					if (css.hasOwnProperty(selector)) {
+						addRule(selector, css[selector]);
+					}
+				}
+			}
+			css = lines.join('\n');
+		}
+		if (el.styleSheet) { // IE
+			el.styleSheet.cssText += css;
+		} else {
+			el.appendChild(doc.createTextNode(css));
+		}
+	};
+
+	func.VERSION = VERSION;
+
+	func.noConflict = function () {
+		if (win[funcName] === func) {
+			win[funcName] = had ? previous : undef;
 			if (!had) {
 				try {
-					delete root[name];
+					delete win[funcName];
 				} catch (ex) {
 				}
 			}
-			return this;
-		};
-		return me;
-	}('style'));
-
-	style.VERSION = '0.0.7';
-
-
-	var keys = {};
-
-	style.sheet = function () {
-		var el, key, prefix;
-		return {
-			add: function (css, options) {
-				key = options && options.key;
-				if (key) {
-					if (keys.hasOwnProperty(key)) {
-						return;
-					}
-					keys[key] = true;
-				}
-				prefix = options && options.prefix;
-				if (!el) {
-					el = document.createElement('style');
-					el.type = 'text/css';
-					document.getElementsByTagName('head')[0].appendChild(el);
-				}
-				if (typeof css === 'object') {
-					var lines = [], rule, selector, finalSelector, property;
-					for (selector in css) {
-						if (css.hasOwnProperty(selector)) {
-							finalSelector = prefix ?
-								selector.replace(/\./g, '.' + prefix) : selector;
-							lines.push(finalSelector + ' {');
-							rule = css[selector];
-							for (property in rule) {
-								if (rule.hasOwnProperty(property)) {
-									lines.push(property + ': ' + rule[property] + ';');
-								}
-							}
-							lines.push('}');
-						}
-					}
-					css = lines.join('\n');
-				}
-				if (el.styleSheet) { // IE
-					el.styleSheet.cssText += css;
-				} else {
-					el.appendChild(document.createTextNode(css));
-				}
-			}
-		};
+		}
+		return func;
 	};
 
-	var defaultSheet = style.sheet();
-	style.add = defaultSheet.add;
+	func.add = func;
 
-}());
+	func.sheet = function () {
+		var
+			el = createEl(),
+			sheetFunc = function (css, options) {
+				func(css, options, el);
+			}
+		;
+		sheetFunc.add = sheetFunc;
+		return sheetFunc;
+	};
+
+}(this, document));
