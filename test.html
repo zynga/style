@@ -20,6 +20,11 @@ $(function () {
 		log(msg, 1);
 		success = false;
 	}
+	function cssEq(styleEl, cssText) {
+		var elText = (styleEl.styleSheet && styleEl.styleSheet.cssText) ||
+			styleEl.innerText;
+		return elText.replace(/\s/g, '') === cssText.replace(/\s/g, '');
+	}
 
 	var
 		myStyleSheet = style.noConflict().sheet(),
@@ -32,56 +37,62 @@ $(function () {
 		err('.noConflict() did not remove global reference!');
 	}
 
+	function clearMyStyle() {
+		myStyleEl.innerText = '';
+		if (myStyleEl.styleSheet) {
+			myStyleEl.styleSheet.cssText = '';
+		}
+	}
+
 	test = 'Object notation for both rules and properties';
 	myStyleSheet({ body: { background: 'red' }});
-	if (myStyleEl.innerText === 'body {\nbackground: red;\n}') {
+	if (cssEq(myStyleEl, 'body{background:red;}')) {
 		log(test + ' worked.');
 	} else {
 		err(test + ' FAILED.');
 	}
-	myStyleEl.innerText = '';
+	clearMyStyle();
 
 	test = 'Object notation for rules, with array notation for properties';
 	myStyleSheet({ body: [
 		['color', 'red'],
-		['padding', '0']
+		['padding', '1px']
 	]});
-	if (myStyleEl.innerText === 'body {\ncolor: red;\npadding: 0;\n}') {
+	if (cssEq(myStyleEl, 'body{color:red;padding:1px;}') ||
+		cssEq(myStyleEl, 'body{padding:1px;color:red;}')) // IE
+	{
 		log(test + ' worked.');
 	} else {
 		err(test + ' FAILED.');
 	}
-	myStyleEl.innerText = '';
+	clearMyStyle();
 
 	test = 'Array notation for rules, with mixed notation for properties';
 	myStyleSheet([
 		['body', { color: 'blue' }],
 		['body', [
 			['background', 'red'],
-			['padding', '0']
+			['padding', '1px']
 		]]
 	]);
-	if (myStyleEl.innerText === 'body {\ncolor: blue;\n}\nbody {\nbackground: red;\npadding: 0;\n}') {
+	if (cssEq(myStyleEl, 'body{color:blue;}body{background:red;padding:1px;}')) {
 		log(test + ' worked.');
 	} else {
 		err(test + ' FAILED.');
 	}
-	myStyleEl.innerText = '';
+	clearMyStyle();
 
 	test = 'Classname prefixing';
 	myStyleSheet([
 		['.body', { color: 'blue' }],
-		['.body', [
-			['background', 'red'],
-			['padding', '0']
-		]]
+		['.body', [['background', 'red'], ['padding', '1px']]]
 	], { prefix: 'my' });
-	if (myStyleEl.innerText === '.mybody {\ncolor: blue;\n}\n.mybody {\nbackground: red;\npadding: 0;\n}') {
+	if (cssEq(myStyleEl, '.mybody{color:blue;}.mybody{background:red;padding:1px;}')) {
 		log(test + ' worked.');
 	} else {
 		err(test + ' FAILED.');
 	}
-	myStyleEl.innerText = '';
+	clearMyStyle();
 
 	log(success ? 'All tests passed.' : 'Not all tests passed. :(', !success);
 });
