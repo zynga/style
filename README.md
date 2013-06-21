@@ -21,6 +21,7 @@ Examples
 
 Usage is pretty simple.
 
+```javascript
 	style({
 		body: {
 			background: '#acf',
@@ -30,9 +31,11 @@ Usage is pretty simple.
 			border: '1px dotted #888'
 		}
 	});
+```
 
 The above code results in this being added to the document.head:
 
+```html
 	<style class="text/css">
 		body {
 			background: #acf;
@@ -42,6 +45,7 @@ The above code results in this being added to the document.head:
 			border: 1px dotted #888;
 		}
 	</style>
+```
 
 The object notation used above is the most similar in form to actual CSS;
 however, it precludes the ability to specify multiple rules with the same
@@ -49,13 +53,16 @@ selector, or within a particular rule, multiple properties of the same name.
 For the rare situations where this might be desired, you can use the alternative
 array notation:
 
+```javascript
 	style([
 		['body', { background: '#acf' }],
 		['body', { color: 'green' }]
 	]);
+```
 
 Or, more usefully:
 
+```javascript
 	style({
 		'.bluebutton': [
 			['background-image',
@@ -64,10 +71,12 @@ Or, more usefully:
 				'-webkit-gradient(linear, 0 0, 0 100%, from(#a8ccf8), color-stop(7%, #76b1f8), color-stop(33%, #6eadf5), to(#2376f5))']
 		]
 	});
+```
 
 To avoid CSS conflicts with other components on the page, it's also useful to be
 able to prefix the classnames with a custom string:
 
+```javascript
 	style(
 		{
 			'body .fancyclass': {
@@ -76,14 +85,17 @@ able to prefix the classnames with a custom string:
 		},
 		{ prefix: 'my_' }
 	);
+```
 
 Resulting CSS:
 
+```html
 	<style class="text/css">
 		body .my_fancyclass {
 			color: chartreuse;
 		}
 	</style>
+```
 
 
 Options
