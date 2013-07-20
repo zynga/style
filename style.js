@@ -2,6 +2,10 @@
 // style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 // notation closely resembling actual CSS syntax.
 //
+// https://github.com/zynga/style
+// Author: Chris Campbell (@quaelin)
+// License: BSD
+//
 (function (win, doc, undef) {
 	var
 		style,
