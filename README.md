@@ -8,7 +8,7 @@ notation closely resembling actual CSS syntax.
 Features
 ========
 
- - Tiny! (~1K minified)
+ - Tiny! (1kB minified)
  - Allows for templating your CSS (for instance, easily add a custom prefix to
    all class names).
  - Supports .noConflict().
