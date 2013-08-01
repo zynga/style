@@ -4,6 +4,8 @@ Overview
 style.js is a tiny JavaScript utility that lets you write CSS in a JS object
 notation closely resembling actual CSS syntax.
 
+[Unit tests.](http://zynga.github.io/style/test.html)
+
 
 Features
 ========
