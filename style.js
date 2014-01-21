@@ -7,10 +7,12 @@
 // License: BSD
 //
 (function (win, doc, undef) {
+	'use strict';
+
 	var
 		style,
 		funcName = 'style',
-		VERSION = '0.2.2',
+		VERSION = '0.2.3',
 		ObjProto = Object.prototype,
 		hasOwn = ObjProto.hasOwnProperty,
 		had = hasOwn.call(win, funcName),
